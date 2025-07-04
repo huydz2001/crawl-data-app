@@ -10,3 +10,6 @@ def request_with_retry(url, method='GET', headers=None, data=None, retries=3):
         except requests.RequestException as e:
             logger.warning(f"Attempt {i+1} failed: {e}")
     raise Exception(f"Failed to call {url} after {retries} retries")
+
+JWT_SECRET = 'your_secret'
+JWT_ALGORITHM = 'HS256'

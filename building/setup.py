@@ -3,8 +3,8 @@ from setuptools import setup, find_packages
 setup(
     name='shared',
     version='0.1.0',
-    packages=find_packages(where='shared'),
-    package_dir={'': 'shared'},
+    packages=find_packages(),
+    py_modules=['exceptions', 'constants', 'response', 'http_client', 'logger'], 
     include_package_data=True,
     install_requires=open('requirements.txt').read().splitlines(),
     author='huydq2k1',
