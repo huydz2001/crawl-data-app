@@ -1,0 +1,50 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+*.egg
+
+# Bytecode / compiled
+*.pyo
+*.pyd
+
+# Virtualenv
+.venv/
+env/
+venv/
+
+# VSCode / IDE
+.vscode/
+.idea/
+
+# Pip install editable mode
+shared/*.egg-info/
+crawler-service/*.egg-info/
+iam-service/*.egg-info/
+
+# Logs / debug
+*.log
+*.out
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Test / coverage
+htmlcov/
+.tox/
+.nox/
+.coverage
+coverage.xml
+.pytest_cache/
+
+# dist / build
+build/
+dist/
+*.tar.gz
+*.whl
+
+# dotenv / secret
+.env
+.env.*
