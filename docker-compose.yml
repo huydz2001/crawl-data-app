@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: huydz2k1
+      POSTGRES_DB: crawl_data
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  iam-service:
+    build: ./iam-service
+    container_name: iam_service
+    restart: always
+    environment:
+      - DATABASE_URL=postgresql://postgres:huydz2k1@db:5432/crawl_data
+    depends_on:
+      - db
+    ports:
+      - "5000:5000"
+    # command: ["python", "app.py"]  # Nếu cần chỉ định lệnh chạy
+
+volumes:
+  postgres_data:

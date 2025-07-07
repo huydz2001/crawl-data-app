@@ -1,0 +1,10 @@
+flask
+flask-cors
+requests
+pyjwt
+bcrypt
+marshmallow
+python-dotenv
+flask-migrate
+flask_sqlalchemy
+psycopg2-binary

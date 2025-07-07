@@ -1,9 +1,4 @@
 flask
-flask-cors
 requests
-pyjwt
-bcrypt
 marshmallow
 python-dotenv
-
--e ../shared

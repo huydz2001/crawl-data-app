@@ -1,6 +1,0 @@
-flask
-requests
-marshmallow
-python-dotenv
-
--e ../shared
