@@ -1,4 +1,5 @@
 from iam_service.common import BaseModel, db
+from building.shared.utils import verify_password
 
 class User(BaseModel):
     __tablename__ = 'users'
@@ -12,3 +13,19 @@ class User(BaseModel):
     created_at = db.Column(db.DateTime)
     created_by = db.Column(db.String(50))
     is_deleted = db.Column(db.Boolean, default=False)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "phone": self.phone,
+            "email": self.email,
+            "is_active": self.is_active,
+            "role": self.role,
+            "created_at": self.created_at,
+            "created_by": self.created_by,
+            "is_deleted": self.is_deleted,
+        }
+    
+    def check_password(self, password):
+        return verify_password(password, self.password)

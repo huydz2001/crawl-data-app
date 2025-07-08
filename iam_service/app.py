@@ -3,8 +3,12 @@ from flask_migrate import Migrate
 from iam_service.common import db
 from iam_service.config import DevConfig
 from iam_service.auth.api import auth_bp
+from building.shared.error_handlers import register_error_handlers
 
 app = Flask(__name__)
+
+# Register error handlers
+register_error_handlers(app)
 
 # Load config
 app.config.from_object(DevConfig)
