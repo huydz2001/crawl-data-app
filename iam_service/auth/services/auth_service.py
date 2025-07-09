@@ -120,6 +120,7 @@ class AuthService:
             if not decoded_token:
                 raise UnauthorizedError('Unauthorized')
 
+
             user_id = decoded_token['user_id']
             user = User.query.filter_by(id=user_id).first()
             if not user:

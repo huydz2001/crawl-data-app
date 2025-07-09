@@ -1,5 +1,5 @@
 from iam_service.common import BaseModel, db
-from building.shared.utils import verify_password
+from building.shared.utils import *
 
 class User(BaseModel):
     __tablename__ = 'users'
@@ -22,7 +22,7 @@ class User(BaseModel):
             "email": self.email,
             "is_active": self.is_active,
             "role": self.role,
-            "created_at": self.created_at,
+            "created_at": format_time(self.created_at),
             "created_by": self.created_by,
             "is_deleted": self.is_deleted,
         }

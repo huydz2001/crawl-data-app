@@ -8,15 +8,43 @@ def auth_required(f):
     def wrapper(*args, **kwargs):
         auth = request.headers.get('Authorization', '')
         if not auth.startswith('Bearer '):
-            make_response(success=False, message='Unauthorized', status=401)
+            return make_response(success=False, message='Unauthorized', status=401)
 
         token = auth.split(' ')[1]
         try:
-            res = requests.post('http://iam-service:5000/auth/verify', json={'token': token})
-            if res.status_code != 200:
-                make_response(success=False, message='Token invalid', status=401)
-            request.user = res.json()
+            # Use RabbitMQ to verify token
+            result = 'oke'
+
+            if not result.get('success', False):
+                return make_response(
+                    success=False, 
+                    message=result.get('message', 'Token invalid'), 
+                    status=result.get('status', 401)
+                )
+        
+            # Set user info from response
+            request.user = result.get('data', {})
         except Exception:
-            make_response(success=False, message='IAM not reachable', status=503)
+            return make_response(success=False, message='IAM not reachable', status=503)
         return f(*args, **kwargs)
     return wrapper
+
+def auth_required_with_role(required_role):
+    def decorator(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            # Check auth first
+            auth_result = auth_required(lambda: None)()
+            
+            # Check role
+            user_role = request.user.get('role')
+            if user_role != required_role:
+                return make_response(
+                    success=False, 
+                    message='Insufficient permissions', 
+                    status=403
+                )
+            
+            return f(*args, **kwargs)
+        return wrapper
+    return decorator

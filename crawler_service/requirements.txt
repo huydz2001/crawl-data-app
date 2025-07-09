@@ -2,3 +2,4 @@ flask
 requests
 marshmallow
 python-dotenv
+pika
