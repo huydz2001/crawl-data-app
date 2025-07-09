@@ -1,6 +1,6 @@
 import jwt
 from datetime import datetime, timedelta
-from shared.config.settings import JWT_SECRET, JWT_ALGORITHM
+from shared.config.settings import *
 
 def create_token(data: dict, exp_minutes=30):
     payload = {

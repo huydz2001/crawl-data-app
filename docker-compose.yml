@@ -6,25 +6,66 @@ services:
     container_name: postgres_db
     restart: always
     environment:
-      POSTGRES_USER: postgres
+      POSTGRES_USER: huydz2k1
       POSTGRES_PASSWORD: huydz2k1
       POSTGRES_DB: crawl_data
     ports:
-      - "5432:5432"
+      - "5435:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin123
+      RABBITMQ_DEFAULT_VHOST: /
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
   iam-service:
-    build: ./iam-service
+    build: ./iam_service
     container_name: iam_service
     restart: always
     environment:
       - DATABASE_URL=postgresql://postgres:huydz2k1@db:5432/crawl_data
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=admin
+      - RABBITMQ_PASSWORD=admin123
+      - RABBITMQ_VHOST=/
     depends_on:
       - db
+      - rabbitmq
     ports:
       - "5000:5000"
     # command: ["python", "app.py"]  # Nếu cần chỉ định lệnh chạy
 
+  # crawler-service:
+  #   build: ./crawler_service
+  #   container_name: crawler_service
+  #   restart: always
+  #   environment:
+  #     - RABBITMQ_HOST=rabbitmq
+  #     - RABBITMQ_PORT=5672
+  #     - RABBITMQ_USER=admin
+  #     - RABBITMQ_PASSWORD=admin123
+  #     - RABBITMQ_VHOST=/
+  #   depends_on:
+  #     - rabbitmq
+  #   ports:
+  #     - "5001:5000"
+
 volumes:
   postgres_data:
+  rabbitmq_data:

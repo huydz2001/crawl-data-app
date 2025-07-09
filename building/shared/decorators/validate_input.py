@@ -10,7 +10,7 @@ def validate_input(schema):
             try:
                 schema().load(json_data)
             except Exception as e:
-                make_response(success=False, message=str(e), status=400)
+                return make_response(success=False, message=str(e), status=400)
             return f(*args, **kwargs)
         return wrapper
     return decorator
