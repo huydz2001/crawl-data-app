@@ -1,8 +1,8 @@
-from building.shared.exceptions import (
+from shared.exceptions import (
     BadRequestError, NotFoundError, ValidationError, 
     UnauthorizedError, TokenExpiredError, InternalServerError
 )
-from building.shared.response import make_response
+from shared.response import make_response
 
 def register_error_handlers(app):
     @app.errorhandler(BadRequestError)

@@ -1,6 +1,6 @@
 from flask import request, g
-from building.shared.response import *
-from building.shared.utils.rabbitmq_helper import *
+from shared.response import *
+from shared.utils.rabbitmq_helper import *
 import time
 
 class AuthMiddleware:
@@ -43,10 +43,10 @@ class AuthMiddleware:
                 message = result['message'], 
                 status = 401
             )
-        
+
         # Set user info
-        request.user = result
-        g.user = result
+        request.user = result['data']
+        g.user = result['data']
     
     def after_request(self, response):
         # Add auth info to response headers if needed

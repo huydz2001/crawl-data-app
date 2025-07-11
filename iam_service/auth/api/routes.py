@@ -1,7 +1,7 @@
 from flask import Blueprint, request
-from iam_service.auth.services import AuthService
-from iam_service.auth.schemas import *
-from building.shared.decorators import *
+from auth.services import AuthService
+from auth.schemas import *
+from shared.decorators import *
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -29,7 +29,13 @@ def refresh():
     return auth_service.refresh(request.validated_data)
 
 @auth_bp.route('/auth/me', methods=['GET'])
-@auth_required_with_role('admin')
 def get_user_by_token():
     auth_service = AuthService()
     return auth_service.get_user_by_token()
+
+@auth_bp.route('/auth/users', methods=['GET'])
+@auth_required_with_role('admin')
+def get_users():
+    print(request.user)
+    auth_service = AuthService()
+    return auth_service.get_users()

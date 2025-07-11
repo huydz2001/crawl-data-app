@@ -1,8 +1,8 @@
 from functools import wraps
 from flask import request
 import requests
-from building.shared.response import make_response
-from building.shared.middleware.auth_middleware import verify_token_rpc
+from shared.response import make_response
+from shared.middleware.auth_middleware import verify_token_rpc
 
 def auth_required_with_role(required_role):
     def decorator(f):

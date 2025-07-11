@@ -1,5 +1,5 @@
-from iam_service.common import BaseModel, db
-from building.shared.utils import *
+from common import BaseModel, db
+from shared.utils import *
 
 class User(BaseModel):
     __tablename__ = 'users'
@@ -25,6 +25,13 @@ class User(BaseModel):
             "created_at": format_time(self.created_at),
             "created_by": self.created_by,
             "is_deleted": self.is_deleted,
+        }
+    
+    def to_basic_dict(self):
+        return {
+            "user_id": self.id,
+            "username": self.username,
+            "role": self.role,
         }
     
     def check_password(self, password):

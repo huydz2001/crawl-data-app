@@ -1,15 +1,25 @@
+import sys
+import os
+
+# Add current directory to Python path
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+# Add parent directory to Python path for building.shared (only if not in Docker)
+if not os.path.exists('/app/building'):
+    parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    sys.path.insert(0, parent_dir)
+
 from flask import Flask
 from flask_migrate import Migrate
-from iam_service.common import db
-from iam_service.config import DevConfig
-from iam_service.auth.api import auth_bp
-from building.shared.error_handlers import register_error_handlers
-from building.shared.middleware import log_request
-from building.shared.middleware import *
-from building.shared.utils import *
-import os
+from common import db
+from config import DevConfig
+from auth.api import auth_bp
+from shared.error_handlers import register_error_handlers
+from shared.middleware import log_request
+from shared.middleware import *
+from shared.utils import *
 import threading
-from iam_service.handler import IAMActionHandlers
+from handler import IAMActionHandlers
 
 
 app = Flask(__name__)

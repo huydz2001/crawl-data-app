@@ -1,9 +1,9 @@
-from iam_service.auth.models import *
-from iam_service.auth.schemas import *
-from iam_service.common import db
-from building.shared.exceptions import *
-from building.shared.response import make_response
-from building.shared.utils import *
+from auth.models import *
+from auth.schemas import *
+from common import db
+from shared.exceptions import *
+from shared.response import make_response
+from shared.utils import *
 from flask import request
 from datetime import datetime
 
@@ -144,3 +144,10 @@ class AuthService:
         except Exception as e:
             raise
     
+
+    def get_users(self):
+        try:
+            users = User.query.all()
+            return make_response(True, [user.to_dict() for user in users], 'Users found', 200)
+        except Exception as e:
+            raise

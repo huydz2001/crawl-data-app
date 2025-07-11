@@ -34,7 +34,9 @@ services:
       retries: 5
 
   iam-service:
-    build: ./iam_service
+    build:
+      context: .
+      dockerfile: iam_service/Dockerfile
     container_name: iam_service
     restart: always
     environment:
@@ -48,8 +50,11 @@ services:
       - db
       - rabbitmq
     ports:
-      - "5000:5000"
-    # command: ["python", "app.py"]  # Nếu cần chỉ định lệnh chạy
+      - "5001:5001"
+    volumes:
+      - ./iam_service:/app
+    command: >
+      sh -c "flask run"
 
   # crawler-service:
   #   build: ./crawler_service

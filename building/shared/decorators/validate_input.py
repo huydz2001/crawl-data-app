@@ -1,6 +1,6 @@
 from functools import wraps
 from flask import request
-from building.shared.response import make_response
+from shared.response import make_response
 
 def validate_input(schema):
     def decorator(f):

@@ -1,4 +1,4 @@
-from iam_service.common import BaseModel, db
+from common import BaseModel, db
 from datetime import datetime
 
 class Token(BaseModel):

@@ -1,7 +1,7 @@
 import threading
 import os
-from building.shared.utils.rabbitmq_helper import *
-from building.shared.logger import setup_logger
+from shared.utils.rabbitmq_helper import *
+from shared.logger import setup_logger
 
 logger = setup_logger(__name__)
 

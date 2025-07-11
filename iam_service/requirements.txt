@@ -9,3 +9,4 @@ flask-migrate
 flask_sqlalchemy
 psycopg2-binary
 pika
+crawl-data-shared
