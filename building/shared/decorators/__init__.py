@@ -1,2 +1,2 @@
-from .auth_required import auth_required
+from .auth_required import *
 from .validate_input import validate_input

@@ -1,6 +1,6 @@
 from functools import wraps
 from flask import request
-from shared.ultis import make_response
+from building.shared.response import make_response
 
 def validate_input(schema):
     def decorator(f):
@@ -8,9 +8,10 @@ def validate_input(schema):
         def wrapper(*args, **kwargs):
             json_data = request.get_json()
             try:
-                schema().load(json_data)
+                validated_data = schema().load(json_data)
+                request.validated_data = validated_data
             except Exception as e:
-                return make_response(success=False, message=str(e), status=400)
+                return make_response(False, None, str(e), 400)
             return f(*args, **kwargs)
         return wrapper
     return decorator
