@@ -10,6 +10,21 @@ from datetime import datetime
 class AuthService:
     def register(self, user_data):
         try:
+            # Check if phone already exists
+            existing_phone = User.query.filter_by(phone=user_data['phone']).first()
+            if existing_phone:
+                raise BadRequestError('Phone number already exists')
+            
+            # Check if email already exists
+            existing_email = User.query.filter_by(email=user_data['email']).first()
+            if existing_email:
+                raise BadRequestError('Email already exists')
+            
+            # Check if username already exists
+            existing_username = User.query.filter_by(username=user_data['username']).first()
+            if existing_username:
+                raise BadRequestError('Username already exists')
+            
             user = User(
                 username=user_data['username'],
                 phone=user_data['phone'],
