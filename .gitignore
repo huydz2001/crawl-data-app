@@ -4,6 +4,7 @@ __pycache__/
 *.so
 *.egg-info/
 *.egg
+building/.pypirc
 
 # Bytecode / compiled
 *.pyo
@@ -53,3 +54,14 @@ dist/
 *.db
 *.sqlite
 *.sqlite3
+
+# Java/Maven
+target/
+*.class
+*.jar
+*.war
+*.ear
+dependency-reduced-pom.xml
+
+# Docker
+*.log

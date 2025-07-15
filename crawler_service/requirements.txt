@@ -3,3 +3,4 @@ requests
 marshmallow
 python-dotenv
 pika
+kafka-python
