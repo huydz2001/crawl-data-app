@@ -1,12 +1,12 @@
 from flask import Flask
 from flask_migrate import Migrate
-from iam_service.common import db
-from iam_service.config import DevConfig
-from iam_service.auth.api import auth_bp
-from building.shared.error_handlers import register_error_handlers
-from building.shared.middleware import log_request
-from building.shared.middleware import *
-from building.shared.utils import *
+from common import *
+from config import *
+from auth.api import auth_bp
+from shared.error_handlers import register_error_handlers
+from shared.middleware import log_request
+from shared.middleware import *
+from shared.utils import *
 import os
 import threading
 from iam_service.handler import IAMActionHandlers
