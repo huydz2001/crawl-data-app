@@ -1,0 +1,10 @@
+flask
+requests
+marshmallow
+python-dotenv
+pika
+kafka-python
+beautifulsoup4
+flask-migrate
+flask_sqlalchemy
+psycopg2-binary

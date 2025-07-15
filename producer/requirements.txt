@@ -3,3 +3,6 @@ requests
 marshmallow
 python-dotenv
 pika
+kafka-python
+beautifulsoup4
+python-dotenv
