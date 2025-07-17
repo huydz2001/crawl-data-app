@@ -49,22 +49,55 @@ services:
       - rabbitmq
     ports:
       - "5000:5000"
-    # command: ["python", "app.py"]  # Nếu cần chỉ định lệnh chạy
 
-  # crawler-service:
-  #   build: ./crawler_service
-  #   container_name: crawler_service
-  #   restart: always
-  #   environment:
-  #     - RABBITMQ_HOST=rabbitmq
-  #     - RABBITMQ_PORT=5672
-  #     - RABBITMQ_USER=admin
-  #     - RABBITMQ_PASSWORD=admin123
-  #     - RABBITMQ_VHOST=/
-  #   depends_on:
-  #     - rabbitmq
-  #   ports:
-  #     - "5001:5000"
+  zookeeper:
+    container_name: zookeeper
+    image: confluentinc/cp-zookeeper:7.5.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+
+  kafka:
+    container_name: kafka
+    image: confluentinc/cp-kafka:7.5.0
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+    depends_on:
+      - zookeeper
+
+  producer:
+    container_name: producer
+    build: ./producer
+    environment:
+      - KAFKA_BROKER_HOST=kafka
+      - KAFKA_BROKER_PORT=9092
+    depends_on:
+      - kafka
+      - kafka-streams
+
+  consumer:
+    container_name: consumer
+    build: ./consumer
+    environment:
+      - DATABASE_URL=postgresql://huydz2k1:huydz2k1@db:5432/data
+      - KAFKA_BROKER_HOST=kafka
+      - KAFKA_BROKER_PORT=9092
+    depends_on:
+      - kafka
+      - kafka-streams
+
+  kafka-streams:
+    container_name: kafka-streams
+    build: ./stream_app
+    depends_on:
+      - kafka
 
 volumes:
   postgres_data:
