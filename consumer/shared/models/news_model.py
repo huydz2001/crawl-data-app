@@ -2,7 +2,7 @@ from shared.common import *
 from datetime import datetime
 from shared.app import db
 
-class News(db.Model):
+class News(BaseModel):
     __tablename__ = 'news'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=True)

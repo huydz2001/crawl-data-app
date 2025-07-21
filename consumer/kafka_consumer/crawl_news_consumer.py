@@ -32,7 +32,7 @@ def crawl_news_consumer():
                 title=message.value["title"],
                 url=message.value["url"],
                 image=message.value["image"],
-                type=message.value["type"]
+                type=message.value["type"],
             )
             db.session.add(news)
             db.session.commit()
