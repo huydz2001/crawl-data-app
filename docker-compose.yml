@@ -13,6 +13,7 @@ services:
       - "5435:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -33,22 +34,22 @@ services:
       timeout: 10s
       retries: 5
 
-  iam-service:
-    build: ./iam_service
-    container_name: iam_service
-    restart: always
-    environment:
-      - DATABASE_URL=postgresql://huydz2k1:huydz2k1@db:5432/crawl_data
-      - RABBITMQ_HOST=rabbitmq
-      - RABBITMQ_PORT=5672
-      - RABBITMQ_USER=admin
-      - RABBITMQ_PASSWORD=admin123
-      - RABBITMQ_VHOST=/
-    depends_on:
-      - db
-      - rabbitmq
-    ports:
-      - "5000:5000"
+  # iam-service:
+  #   build: ./iam_service
+  #   container_name: iam_service
+  #   restart: always
+  #   environment:
+  #     - DATABASE_URL=postgresql://huydz2k1:huydz2k1@db:5432/crawl_data
+  #     - RABBITMQ_HOST=rabbitmq
+  #     - RABBITMQ_PORT=5672
+  #     - RABBITMQ_USER=admin
+  #     - RABBITMQ_PASSWORD=admin123
+  #     - RABBITMQ_VHOST=/
+  #   depends_on:
+  #     - db
+  #     - rabbitmq
+  #   ports:
+  #     - "5000:5000"
 
   zookeeper:
     container_name: zookeeper
@@ -62,6 +63,11 @@ services:
     ports:
       - "9092:9092"
       - "29092:29092"
+    healthcheck:
+      test: ["CMD", "kafka-topics", "--list", "--bootstrap-server", "kafka:9092"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -79,8 +85,8 @@ services:
       - KAFKA_BROKER_HOST=kafka
       - KAFKA_BROKER_PORT=9092
     depends_on:
-      - kafka
-      - kafka-streams
+      kafka:
+        condition: service_healthy
 
   consumer:
     container_name: consumer
@@ -90,14 +96,15 @@ services:
       - KAFKA_BROKER_HOST=kafka
       - KAFKA_BROKER_PORT=9092
     depends_on:
-      - kafka
-      - kafka-streams
+      kafka:
+        condition: service_healthy
 
   kafka-streams:
     container_name: kafka-streams
     build: ./stream_app
     depends_on:
-      - kafka
+      kafka:
+        condition: service_healthy
 
 volumes:
   postgres_data:
